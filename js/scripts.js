@@ -1,6 +1,11 @@
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 
+document.getElementById("buttonStart").addEventListener("click", () => {
+  road.draw();
+  car.draw();
+});
+
 class Road {
   constructor(width, height, x, y) {
     this.width = width;
@@ -8,6 +13,7 @@ class Road {
     this.x = x;
     this.y = y;
   }
+
   draw() {
     const roadImg = new Image();
     roadImg.src = "../images/road.png";
@@ -44,38 +50,36 @@ class Car {
   moveRight() {
     this.x += 25;
   }
+  clear() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
 }
 const car = new Car();
-// function updateCanvas() {
-//   ctx.clearRect(0, 0, canvas.width, canvas.height);
-//   road.draw();
-//   car.draw();
-//   //   requestAnimationFrame(updateCanvas);
-// }
-
-document.getElementById("buttonStart").addEventListener("click", () => {
+function updateCanvas() {
   road.draw();
   car.draw();
-});
+  //   requestAnimationFrame(updateCanvas);
+}
+// this.interval = setInterval(updateCanvas, 20);
 
 document.addEventListener("keydown", (e) => {
   switch (e.code) {
     case "ArrowUp":
-      car.moveUp;
+      car.moveUp();
       console.log("up", car);
       break;
     case "ArrowDown":
-      car.moveDown;
+      car.moveDown();
       console.log("down", car);
       break;
     case "ArrowRight":
-      car.moveRight;
+      car.moveRight();
       console.log("right", car);
       break;
     case "ArrowLeft":
-      car.moveLeft;
+      car.moveLeft();
       console.log("left", car);
       break;
   }
-  //   updateCanvas();
+  updateCanvas();
 });
