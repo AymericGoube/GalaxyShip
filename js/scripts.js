@@ -8,6 +8,7 @@ const satelliteImg = new Image();
 satelliteImg.src = "../images/asteroide.png";
 const asteroidImg = new Image();
 asteroidImg.src = "../images/asteroid.png";
+let interval = setInterval(updateCanvas, 20);
 
 document.getElementById("buttonStart").addEventListener("click", () => {
   // road.draw();
@@ -48,7 +49,6 @@ class Car {
   }
   draw() {
     ctx.drawImage(carImg, this.x, this.y, this.width, this.height);
-    console.log(myObstacles);
   }
   left() {
     return this.x;
@@ -62,11 +62,6 @@ class Car {
   bottom() {
     return this.y + this.height;
   }
-  // crash(myObstacles) {
-  //   if(){
-
-  //   }
-  // }
   moveUp() {
     car.y -= 25;
   }
@@ -89,8 +84,6 @@ function updateCanvas() {
   updateObstacles();
 }
 
-this.interval = setInterval(updateCanvas, 20);
-
 document.addEventListener("keydown", (e) => {
   switch (e.code) {
     case "ArrowUp":
@@ -106,7 +99,7 @@ document.addEventListener("keydown", (e) => {
       car.moveLeft();
       break;
   }
-  updateCanvas();
+  // updateCanvas();
 });
 
 class Component {
@@ -117,8 +110,31 @@ class Component {
     this.x = x;
     this.y = y;
   }
+  left() {
+    return this.x;
+  }
+  right() {
+    return this.x + this.width;
+  }
+  top() {
+    return this.y;
+  }
+  bottom() {
+    return this.y + this.height;
+  }
   update() {
     ctx.drawImage(this.img, this.x, this.y, this.height, this.width);
+  }
+  checkCollision(component) {
+    // returns true if collision
+    let checkTop = false;
+    let checkBottom = false;
+    // console.log(car.bottom());
+    checkTop = car.right() > component.left() && car.left() < component.right();
+    checkBottom =
+      car.top() < component.bottom() && car.bottom() > component.top();
+    // console.log(checkTop && checkBottom);
+    return checkTop && checkBottom;
   }
 }
 
@@ -127,8 +143,12 @@ tabImg.push(asteroidImg);
 tabImg.push(satelliteImg);
 tabImg.push(alienImg);
 function updateObstacles() {
-  for (i = 0; i < myObstacles.length; i++) {
+  for (let i = 0; i < myObstacles.length; i++) {
     myObstacles[i].y += 1;
+    if (myObstacles[i].checkCollision(myObstacles[i])) {
+      //lose game
+      clearInterval(interval);
+    }
     myObstacles[i].update();
   }
   road.frames += 1;
@@ -136,5 +156,6 @@ function updateObstacles() {
     this.x = Math.floor(Math.random() * road.width);
     this.img = tabImg[Math.floor(Math.random() * tabImg.length)];
     myObstacles.push(new Component(this.img, this.x, 0, 100, 100));
+    console.log(myObstacles);
   }
 }
