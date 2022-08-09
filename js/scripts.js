@@ -102,16 +102,26 @@ function updateCanvas() {
 document.addEventListener("keydown", (e) => {
   switch (e.code) {
     case "ArrowUp":
-      car.moveUp();
+      console.log(car.top(), canvas.height);
+      if (car.top() > 0) {
+        car.moveUp();
+      }
       break;
     case "ArrowDown":
-      car.moveDown();
+      if (car.bottom() < canvas.height) {
+        car.moveDown();
+      }
+
       break;
     case "ArrowRight":
-      car.moveRight();
+      if (car.right() < canvas.width) {
+        car.moveRight();
+      }
       break;
     case "ArrowLeft":
-      car.moveLeft();
+      if (car.left() > 0) {
+        car.moveLeft();
+      }
       break;
   }
   // updateCanvas();
@@ -169,6 +179,7 @@ function updateObstacles() {
       clearInterval(interval);
       gameOverScreen();
     }
+
     myObstacles[i].update();
   }
   road.frames += 1;
@@ -183,8 +194,8 @@ function gameOverScreen() {
   const tryAgainBtn = document.getElementById("tryAgain");
   endGameModalId.innerHTML = `Your score is : ${road.frames + 1}`;
   modalBox.showModal();
-  tryAgainBtn.addEventListener("click", () => {
-    let interval = setInterval(updateCanvas, 20);
-    updateCanvas();
-  });
+  // tryAgainBtn.addEventListener("click", () => {
+  //   let interval = setInterval(updateCanvas, 20);
+  //   updateCanvas();
+  // });
 }
