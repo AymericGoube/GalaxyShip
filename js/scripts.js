@@ -2,17 +2,24 @@ const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 const myObstacles = [];
 const scoreP = document.getElementById("score");
+const alienImg = new Image();
+alienImg.src = "../images/soucoupe.png";
+const satelliteImg = new Image();
+satelliteImg.src = "../images/asteroide.png";
+const asteroidImg = new Image();
+asteroidImg.src = "../images/asteroid.png";
 
 document.getElementById("buttonStart").addEventListener("click", () => {
-  road.draw();
-  car.draw();
+  // road.draw();
+  // car.draw();
+  updateCanvas();
 });
 
 const roadImg = new Image();
 roadImg.src = "../images/space.jpeg";
 
 class Road {
-  constructor(width, height, x, y) {
+  constructor(x, y, width, height) {
     this.width = width;
     this.height = height;
     this.x = x;
@@ -21,7 +28,7 @@ class Road {
   }
 
   draw() {
-    ctx.drawImage(roadImg, this.width, this.height, this.x, this.y);
+    ctx.drawImage(roadImg, this.x, this.y, this.width, this.height);
   }
   clear() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -34,14 +41,32 @@ carImg.src = "../images/spacecraft.png";
 
 class Car {
   constructor() {
-    this.width = 75;
-    this.height = 150;
+    this.width = 45;
+    this.height = 100;
     this.x = 300;
     this.y = 420;
   }
   draw() {
     ctx.drawImage(carImg, this.x, this.y, this.width, this.height);
+    console.log(myObstacles);
   }
+  left() {
+    return this.x;
+  }
+  right() {
+    return this.x + this.width;
+  }
+  top() {
+    return this.y;
+  }
+  bottom() {
+    return this.y + this.height;
+  }
+  // crash(myObstacles) {
+  //   if(){
+
+  //   }
+  // }
   moveUp() {
     car.y -= 25;
   }
@@ -56,12 +81,12 @@ class Car {
   }
 }
 const car = new Car();
+
 function updateCanvas() {
   road.clear();
   road.draw();
   car.draw();
   updateObstacles();
-  //   requestAnimationFrame(updateCanvas);
 }
 
 this.interval = setInterval(updateCanvas, 20);
@@ -93,13 +118,14 @@ class Component {
     this.y = y;
   }
   update() {
-    // ctx.fillStyle = this.color;
-    // ctx.fillRect(this.x, this.y, this.width, this.height);
     ctx.drawImage(this.img, this.x, this.y, this.height, this.width);
   }
 }
-const asteroidImg = new Image();
-asteroidImg.src = "../images/asteroide.png";
+
+let tabImg = [];
+tabImg.push(asteroidImg);
+tabImg.push(satelliteImg);
+tabImg.push(alienImg);
 function updateObstacles() {
   for (i = 0; i < myObstacles.length; i++) {
     myObstacles[i].y += 1;
@@ -107,27 +133,8 @@ function updateObstacles() {
   }
   road.frames += 1;
   if (road.frames % 240 === 0) {
-    myObstacles.push(new Component(asteroidImg, 50, 0, 100, 100));
+    this.x = Math.floor(Math.random() * road.width);
+    this.img = tabImg[Math.floor(Math.random() * tabImg.length)];
+    myObstacles.push(new Component(this.img, this.x, 0, 100, 100));
   }
 }
-
-// console.log(myObstacles);
-// let x = road.width;
-// let minHeight = 20;
-// // let maxHeight = 200;
-// let height = Math.floor(
-//   Math.random() * (maxHeight - minHeight + 1) + minHeight
-// );
-// let minGap = 50;
-// let maxGap = 200;
-// let gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
-// myObstacles.push(new Component(asteroidImg.src, 50, 200, 400, 0));
-// const test = new Component(50, 50, "red", 50, 50);
-// myObstacles.push(test);
-
-// myObstacles.push(new Component(105, 150, "blue", 200, 0));
-
-// myObstacles.push(
-//   new Component(50, x - height - gap, "red", x, height + gap)
-// );
-// }
