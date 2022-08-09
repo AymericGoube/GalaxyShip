@@ -1,6 +1,7 @@
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 const myObstacles = [];
+const scoreP = document.getElementById("score");
 
 document.getElementById("buttonStart").addEventListener("click", () => {
   road.draw();
@@ -25,6 +26,7 @@ class Road {
   clear() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
+  score() {}
 }
 const road = new Road(0, 0, 800, 600);
 const carImg = new Image();
@@ -83,46 +85,49 @@ document.addEventListener("keydown", (e) => {
 });
 
 class Component {
-  constructor(height, width, color, x, y) {
+  constructor(img, x, y, height, width) {
+    this.img = img;
     this.height = height;
     this.width = width;
-    this.color = color;
     this.x = x;
     this.y = y;
   }
   update() {
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+    // ctx.fillStyle = this.color;
+    // ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.drawImage(this.img, this.x, this.y, this.height, this.width);
   }
 }
-
-// const obstacle = new Component(30, 30, "red", 0, 110);
-
+const asteroidImg = new Image();
+asteroidImg.src = "../images/asteroide.png";
 function updateObstacles() {
-  const obstacle = new Component(30, 30, "red", 0, 110);
   for (i = 0; i < myObstacles.length; i++) {
-    myObstacles[i].y -= -1;
+    myObstacles[i].y += 1;
     myObstacles[i].update();
   }
   road.frames += 1;
-  //   console.log(road.frames);
-  if (road.frames % 120 === 0) {
-    console.log(myObstacles);
-    // let x = road.width;
-    // let minHeight = 20;
-    // // let maxHeight = 200;
-    // let height = Math.floor(
-    //   Math.random() * (maxHeight - minHeight + 1) + minHeight
-    // );
-    // let minGap = 50;
-    // let maxGap = 200;
-    // let gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
-    // myObstacles.push(new Component(50, height, "red", x, 0));
-    // const test = new Component(50, 50, "red", 50, 50);
-    // myObstacles.push(test);
-    // myObstacles.push(new Component(105, 150, "blue", 200, 200));
-    // myObstacles.push(
-    //   new Component(50, x - height - gap, "red", x, height + gap)
-    // );
+  if (road.frames % 240 === 0) {
+    myObstacles.push(new Component(asteroidImg, 50, 0, 100, 100));
   }
 }
+
+// console.log(myObstacles);
+// let x = road.width;
+// let minHeight = 20;
+// // let maxHeight = 200;
+// let height = Math.floor(
+//   Math.random() * (maxHeight - minHeight + 1) + minHeight
+// );
+// let minGap = 50;
+// let maxGap = 200;
+// let gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
+// myObstacles.push(new Component(asteroidImg.src, 50, 200, 400, 0));
+// const test = new Component(50, 50, "red", 50, 50);
+// myObstacles.push(test);
+
+// myObstacles.push(new Component(105, 150, "blue", 200, 0));
+
+// myObstacles.push(
+//   new Component(50, x - height - gap, "red", x, height + gap)
+// );
+// }
