@@ -1,8 +1,26 @@
 body {
+  background-image: url("../images/background.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
 }
 
-#canvas {
+.canvas-closed {
+  display: none;
+}
+
+#canvas-open {
   outline: 1px solid black;
+}
+
+.buttonStart-closed {
+  display: none;
+}
+
+#buttonStart {
+  width: 100px;
+  height: 100px;
+  background-image: url("../images/butoon.png");
+  background-size: contain;
 }

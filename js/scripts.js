@@ -1,6 +1,7 @@
 const canvas = document.querySelector("#canvas");
+const start = document.getElementById("buttonStart");
 const ctx = canvas.getContext("2d");
-const myObstacles = [];
+let myObstacles = [];
 const scoreP = document.getElementById("score");
 const alienImg = new Image();
 alienImg.src = "../images/soucoupe.png";
@@ -8,20 +9,34 @@ const satelliteImg = new Image();
 satelliteImg.src = "../images/asteroide.png";
 const asteroidImg = new Image();
 asteroidImg.src = "../images/asteroid.png";
-let interval = setInterval(updateCanvas, 20);
+let intervalId;
 const modalBox = document.getElementById("modal");
 const endGameModalId = document.querySelector("#endGameModal");
-
-document.getElementById("buttonStart").addEventListener("click", () => {
+const tryAgain = document.getElementById("tryAgain");
+// "Start the game" button
+start.addEventListener("click", () => {
+  createInterval();
+  canvas.classList.remove("canvas-closed");
+  canvas.classList.toggle("canvas-open");
+  start.classList.toggle("buttonStart-closed");
   // road.draw();
   // car.draw();
   road.start();
   // updateCanvas();
 });
-
+// "Try again ?" button
+tryAgain.addEventListener("click", () => {
+  road.frames = 0;
+  myObstacles = [];
+  car.reset();
+  createInterval();
+});
 const roadImg = new Image();
 roadImg.src = "../images/space.jpeg";
-
+function createInterval() {
+  intervalId = setInterval(updateCanvas, 20);
+}
+// Implementing gameArea
 class Road {
   constructor(x, y, width, height) {
     this.width = width;
@@ -57,6 +72,13 @@ class Car {
     this.x = 300;
     this.y = 420;
     this.life = 3;
+    this.hasBeenHit = false;
+  }
+  reset() {
+    this.x = 300;
+    this.y = 420;
+    this.life = 3;
+    this.hasBeenHit = false;
   }
   draw() {
     ctx.drawImage(carImg, this.x, this.y, this.width, this.height);
@@ -159,11 +181,16 @@ class Component {
     checkBottom =
       car.top() < component.bottom() && car.bottom() > component.top();
     // console.log(checkTop && checkBottom);
-    if (checkTop && checkBottom) {
+    if (checkTop && checkBottom && !car.hasBeenHit) {
+      car.hasBeenHit = true;
       console.log(car.life);
       car.losingLife();
+      setTimeout(() => {
+        car.hasBeenHit = false;
+      }, 1000);
       return true;
     }
+    return false;
   }
 }
 
@@ -176,10 +203,9 @@ function updateObstacles() {
     myObstacles[i].y += 1;
     if (myObstacles[i].checkCollision(myObstacles[i]) && car.life === 0) {
       //lose game
-      clearInterval(interval);
+      clearInterval(intervalId);
       gameOverScreen();
     }
-
     myObstacles[i].update();
   }
   road.frames += 1;
@@ -194,8 +220,4 @@ function gameOverScreen() {
   const tryAgainBtn = document.getElementById("tryAgain");
   endGameModalId.innerHTML = `Your score is : ${road.frames + 1}`;
   modalBox.showModal();
-  // tryAgainBtn.addEventListener("click", () => {
-  //   let interval = setInterval(updateCanvas, 20);
-  //   updateCanvas();
-  // });
 }
