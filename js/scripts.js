@@ -15,13 +15,16 @@ let intervalId;
 const modalBox = document.getElementById("modal");
 const endGameModalId = document.querySelector("#endGameModal");
 const tryAgain = document.getElementById("tryAgain");
+const mainDiv = document.querySelector(".mainDiv");
+
 // let livesTab = [];
+
 // "Start the game" button
 start.addEventListener("click", () => {
   createInterval();
   canvas.classList.remove("canvas-closed");
   canvas.classList.toggle("canvas-open");
-  start.classList.toggle("buttonStart-closed");
+  mainDiv.classList.toggle("mainDivClosed");
   // road.start();
 });
 // "Try again ?" button
@@ -96,16 +99,16 @@ class Car {
     return this.y + this.height;
   }
   moveUp() {
-    car.y -= 45;
+    car.y -= 10;
   }
   moveDown() {
-    this.y += 45;
+    this.y += 10;
   }
   moveLeft() {
-    this.x -= 45;
+    this.x -= 10;
   }
   moveRight() {
-    this.x += 45;
+    this.x += 10;
   }
   losingLife() {
     this.life--;
@@ -117,6 +120,7 @@ const car = new Car();
 function updateCanvas() {
   road.clear();
   road.draw();
+  move();
   if (!car.hasBeenHit || !(road.frames % 3)) {
     car.draw();
   }
@@ -124,34 +128,60 @@ function updateCanvas() {
   updateObstacles();
   road.score();
 }
-
+const keys = {
+  ArrowUp: false,
+  ArrowDown: false,
+  ArrowLeft: false,
+  ArrowRight: false,
+};
 document.addEventListener("keydown", (e) => {
   switch (e.code) {
     case "ArrowUp":
       console.log(car.top(), canvas.height);
-      if (car.top() > 0) {
-        car.moveUp();
-      }
+      keys.ArrowUp = true;
       break;
     case "ArrowDown":
-      if (car.bottom() < canvas.height) {
-        car.moveDown();
-      }
-
+      keys.ArrowDown = true;
       break;
     case "ArrowRight":
-      if (car.right() < canvas.width) {
-        car.moveRight();
-      }
+      keys.ArrowRight = true;
       break;
     case "ArrowLeft":
-      if (car.left() > 0) {
-        car.moveLeft();
-      }
+      keys.ArrowLeft = true;
       break;
   }
-  // updateCanvas();
 });
+document.addEventListener("keyup", (e) => {
+  switch (e.code) {
+    case "ArrowUp":
+      keys.ArrowUp = false;
+      break;
+    case "ArrowDown":
+      keys.ArrowDown = false;
+      break;
+    case "ArrowRight":
+      keys.ArrowRight = false;
+      break;
+    case "ArrowLeft":
+      keys.ArrowLeft = false;
+      break;
+  }
+});
+
+function move() {
+  if (car.top() > 0 && keys.ArrowUp) {
+    car.moveUp();
+  }
+  if (car.bottom() < canvas.height && keys.ArrowDown) {
+    car.moveDown();
+  }
+  if (car.right() < canvas.width && keys.ArrowRight) {
+    car.moveRight();
+  }
+  if (car.left() > 0 && keys.ArrowLeft) {
+    car.moveLeft();
+  }
+}
 
 class Component {
   constructor(img, x, y, height, width, velocity) {
@@ -266,3 +296,31 @@ function gameOverScreen() {
 
 // const test = new life(lifeImg, 10, 65, 30, 30);
 // const livesTab = livesTab.push(test);
+
+// document.addEventListener("keydown", (e) => {
+//   switch (e.code) {
+//     case "ArrowUp":
+//       console.log(car.top(), canvas.height);
+//       if (car.top() > 0) {
+//         car.moveUp();
+//       }
+//       break;
+//     case "ArrowDown":
+//       if (car.bottom() < canvas.height) {
+//         car.moveDown();
+//       }
+
+//       break;
+//     case "ArrowRight":
+//       if (car.right() < canvas.width) {
+//         car.moveRight();
+//       }
+//       break;
+//     case "ArrowLeft":
+//       if (car.left() > 0) {
+//         car.moveLeft();
+//       }
+//       break;
+//   }
+//   // updateCanvas();
+// });
