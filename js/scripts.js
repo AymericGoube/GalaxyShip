@@ -16,7 +16,8 @@ const modalBox = document.getElementById("modal");
 const endGameModalId = document.querySelector("#endGameModal");
 const tryAgain = document.getElementById("tryAgain");
 const mainDiv = document.querySelector(".mainDiv");
-
+const highscoreList = document.getElementById("highScore");
+const backToMenu = document.getElementById("backToMenu");
 // let livesTab = [];
 
 // "Start the game" button
@@ -31,8 +32,17 @@ start.addEventListener("click", () => {
 tryAgain.addEventListener("click", () => {
   road.frames = 0;
   myObstacles = [];
+  car.resetKey();
   car.reset();
   createInterval();
+});
+
+backToMenu.addEventListener("click", () => {
+  road.frames = 0;
+  myObstacles = [];
+  car.reset();
+  canvas.classList.add("canvas-closed");
+  mainDiv.classList.remove("mainDivClosed");
 });
 const roadImg = new Image();
 roadImg.src = "../images/space.jpeg";
@@ -99,7 +109,7 @@ class Car {
     return this.y + this.height;
   }
   moveUp() {
-    car.y -= 10;
+    this.y -= 10;
   }
   moveDown() {
     this.y += 10;
@@ -113,6 +123,12 @@ class Car {
   losingLife() {
     this.life--;
     // clearLivesImg();
+  }
+  resetKey() {
+    keys.ArrowUp = false;
+    keys.ArrowDown = false;
+    keys.ArrowRight = false;
+    keys.ArrowLeft = false;
   }
 }
 const car = new Car();
@@ -137,7 +153,6 @@ const keys = {
 document.addEventListener("keydown", (e) => {
   switch (e.code) {
     case "ArrowUp":
-      console.log(car.top(), canvas.height);
       keys.ArrowUp = true;
       break;
     case "ArrowDown":
@@ -260,19 +275,22 @@ let tabImg = [];
 tabImg.push(asteroidImg);
 tabImg.push(satelliteImg);
 tabImg.push(alienImg);
-
 function updateObstacles() {
   for (let i = 0; i < myObstacles.length; i++) {
     myObstacles[i].y += myObstacles[i].velocity;
     if (myObstacles[i].checkCollision(myObstacles[i]) && car.life === 0) {
       //lose game
+      nameUser = window.prompt("Enter your name: ");
+      localStorage.setItem(nameUser, road.frames + 1);
+
+      // console.log(nameUser[i], "hello");
       clearInterval(intervalId);
       gameOverScreen();
     }
     myObstacles[i].update();
   }
   road.frames += 1;
-  if (road.frames % 60 === 0) {
+  if (road.frames % 20 === 0) {
     // this.velocity = Math.ceil(Math.random() * 20);
     this.x = Math.floor(Math.random() * road.width);
     this.img = tabImg[Math.floor(Math.random() * tabImg.length)];
@@ -294,33 +312,49 @@ function gameOverScreen() {
   modalBox.showModal();
 }
 
+// function creatingHighscoreList() {
+// localStorage.forEach((element) => {
+// console.log()
+// let createList = document.createElement("li");
+// console.log(`${nameUser}, ${localStorage.getItem("nameUser")}`);
+// for (let e in localStorage) {
+//   console.log(localStorage);
+// }
+// highscoreList.append(
+//   `${nameUser}, ${localStorage.getItem("nameUser")}`,
+//   createList
+// );
+
+// });
+// }
+
+function creatingHighscoreList() {
+  for (let i = 0; i < localStorage.length; i++) {
+    let keyName = localStorage.key(i);
+    let value = localStorage.getItem(keyName);
+    console.log(keyName, value);
+    // const objTest.keyName = value;
+  }
+  // let createList = document.createElement("li");
+  // highscoreList.append(createList);
+
+  // console.log(value);
+  // createList.innerHTML = `${localStorage.key(7)}`;
+  // Object.keys(localStorage).forEach(function (key) {
+  // console.log(localStorage.getItem(key));
+  // });
+}
+creatingHighscoreList();
 // const test = new life(lifeImg, 10, 65, 30, 30);
 // const livesTab = livesTab.push(test);
 
-// document.addEventListener("keydown", (e) => {
-//   switch (e.code) {
-//     case "ArrowUp":
-//       console.log(car.top(), canvas.height);
-//       if (car.top() > 0) {
-//         car.moveUp();
-//       }
-//       break;
-//     case "ArrowDown":
-//       if (car.bottom() < canvas.height) {
-//         car.moveDown();
-//       }
-
-//       break;
-//     case "ArrowRight":
-//       if (car.right() < canvas.width) {
-//         car.moveRight();
-//       }
-//       break;
-//     case "ArrowLeft":
-//       if (car.left() > 0) {
-//         car.moveLeft();
-//       }
-//       break;
-//   }
-//   // updateCanvas();
-// });
+// Aymeric: "503"
+// Hello: "402"
+// Hello2: "456"
+// Heyo: "2866"
+// Test: "497"
+// Test2: "466"
+// aokda: "322"
+// oadod: "339"
+// padlada: "356"
+// popopo: "973"

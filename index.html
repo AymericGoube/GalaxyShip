@@ -5,10 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles/style.css" />
-    <title>Document</title>
+    <link rel="icon" type="image/x-icon" href="./images/favIcon.ico" />
+    <title>Galaxy Spaceship</title>
   </head>
   <body>
     <div class="mainDiv">
+      <ol id="highScore"></ol>
       <p>Are you ready to enter the spaceship ?</p>
       <button id="buttonStart" style="cursor: pointer"></button>
     </div>
@@ -19,6 +21,7 @@
           <p id="endGameModal"></p>
         </section>
         <menu>
+          <button id="backToMenu">Back to menu</button>
           <button id="tryAgain" type="submit">Try again</button>
         </menu>
       </form>
