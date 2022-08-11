@@ -6,15 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles/style.css" />
     <link rel="icon" type="image/x-icon" href="./images/favIcon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap"
+      rel="stylesheet"
+    />
     <title>Galaxy Spaceship</title>
   </head>
   <body>
     <div class="mainDiv">
       <ol id="highScore"></ol>
       <p>Are you ready to enter the spaceship ?</p>
+      <p id="rules">
+        The rules are simple : Avoid everything, the longer you survive the
+        better your score will be !
+      </p>
       <button id="buttonStart" style="cursor: pointer"></button>
     </div>
-    <div class="lifeDiv">
+    <div class="lifeDiv-closed">
       <img src="./images/heart.jpeg" class="imgHeart1" alt="" />
       <img src="./images/heart.jpeg" class="imgHeart2" alt="" />
       <img src="./images/heart.jpeg" class="imgHeart3" alt="" />

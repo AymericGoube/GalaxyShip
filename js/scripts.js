@@ -18,20 +18,19 @@ const tryAgain = document.getElementById("tryAgain");
 const mainDiv = document.querySelector(".mainDiv");
 const highscoreList = document.getElementById("highScore");
 const backToMenu = document.getElementById("backToMenu");
-const lifeDiv = document.querySelector(".lifeDiv");
+const lifeDiv = document.querySelector(".lifeDiv-closed");
 const imgHeart1 = document.querySelector(".imgHeart1");
 const imgHeart2 = document.querySelector(".imgHeart2");
 const imgHeart3 = document.querySelector(".imgHeart3");
-// let livesTab = [];
 
 // "Start the game" button
 start.addEventListener("click", () => {
   createInterval();
   canvas.classList.remove("canvas-closed");
   canvas.classList.toggle("canvas-open");
-  lifeDiv.classList.remove("lifeDiv");
+  lifeDiv.classList.remove("lifeDiv-closed");
+  lifeDiv.classList.add("lifeDiv");
   mainDiv.classList.toggle("mainDivClosed");
-  // road.start();
 });
 // "Try again ?" button
 tryAgain.addEventListener("click", () => {
@@ -228,16 +227,16 @@ class Component {
     this.velocity = velocity;
   }
   left() {
-    return this.x;
+    return this.x + 10;
   }
   right() {
-    return this.x + this.width;
+    return this.x + this.width - 10;
   }
   top() {
-    return this.y;
+    return this.y + 10;
   }
   bottom() {
-    return this.y + this.height;
+    return this.y + this.height - 10;
   }
   update() {
     ctx.drawImage(this.img, this.x, this.y, this.height, this.width);
@@ -246,16 +245,12 @@ class Component {
     // returns true if collision
     let checkTop = false;
     let checkBottom = false;
-    // console.log(car.bottom());
     checkTop = car.right() > component.left() && car.left() < component.right();
     checkBottom =
       car.top() < component.bottom() && car.bottom() > component.top();
-    // console.log(checkTop && checkBottom);
     if (checkTop && checkBottom && !car.hasBeenHit) {
       car.hasBeenHit = true;
       car.losingLife();
-      console.log(car.life);
-
       setTimeout(() => {
         car.hasBeenHit = false;
       }, 1000);
@@ -305,8 +300,14 @@ function updateObstacles() {
     myObstacles[i].y += myObstacles[i].velocity;
     if (myObstacles[i].checkCollision(myObstacles[i]) && car.life === 0) {
       //lose game
-      nameUser = window.prompt("Enter your name: ");
-      localStorage.setItem(nameUser, road.frames + 1);
+
+      let name = window.prompt("Enter your name: ");
+      let score = road.frames + 1;
+      let objectTest = {
+        name: name,
+        score: score,
+      };
+      localStorage.setItem("myObject", JSON.stringify(objectTest));
       clearInterval(intervalId);
       gameOverScreen();
     }
@@ -314,7 +315,6 @@ function updateObstacles() {
   }
   road.frames += 1;
   if (road.frames % 20 === 0) {
-    // this.velocity = Math.ceil(Math.random() * 20);
     this.x = Math.floor(Math.random() * road.width);
     this.img = tabImg[Math.floor(Math.random() * tabImg.length)];
     myObstacles.push(
@@ -324,7 +324,7 @@ function updateObstacles() {
         0,
         100,
         100,
-        Math.ceil(Math.random() * 20)
+        Math.ceil(Math.random() * 10) + 3
       )
     );
   }
@@ -334,6 +334,17 @@ function gameOverScreen() {
   endGameModalId.innerHTML = `Your score is : ${road.frames + 1}`;
   modalBox.showModal();
 }
+
+function creatingHighscoreList() {
+  for (let i = 0; i < localStorage.length; i++) {
+    // let keyName = localStorage.key(i);
+    // let value = localStorage.getItem(keyName);
+    let parsedScore = JSON.parse(localStorage.getItem("myObject"));
+    console.log(localStorage);
+    // const objTest.keyName = value;
+  }
+}
+creatingHighscoreList();
 
 // function creatingHighscoreList() {
 // localStorage.forEach((element) => {
@@ -351,23 +362,14 @@ function gameOverScreen() {
 // });
 // }
 
-function creatingHighscoreList() {
-  for (let i = 0; i < localStorage.length; i++) {
-    let keyName = localStorage.key(i);
-    let value = localStorage.getItem(keyName);
-    console.log(keyName, value);
-    // const objTest.keyName = value;
-  }
-  // let createList = document.createElement("li");
-  // highscoreList.append(createList);
+// let createList = document.createElement("li");
+// highscoreList.append(createList);
 
-  // console.log(value);
-  // createList.innerHTML = `${localStorage.key(7)}`;
-  // Object.keys(localStorage).forEach(function (key) {
-  // console.log(localStorage.getItem(key));
-  // });
-}
-creatingHighscoreList();
+// console.log(value);
+// createList.innerHTML = `${localStorage.key(7)}`;
+// Object.keys(localStorage).forEach(function (key) {
+// console.log(localStorage.getItem(key));
+// });
 // const test = new life(lifeImg, 10, 65, 30, 30);
 // const livesTab = livesTab.push(test);
 
