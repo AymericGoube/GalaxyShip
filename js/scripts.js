@@ -70,6 +70,11 @@ class Road {
     ctx.fillStyle = "white";
     ctx.fillText(`Score : ${road.frames}`, 20, 60);
   }
+  life() {
+    ctx.font = "20pt Calibri";
+    ctx.fillStyle = "white";
+    ctx.fillText(`Life : ${car.life}`, 20, 100);
+  }
   start() {
     updateCanvas();
   }
@@ -142,6 +147,7 @@ function updateCanvas() {
   }
   // livesTab.drawLivesImg();
   updateObstacles();
+  road.life();
   road.score();
 }
 const keys = {
@@ -282,8 +288,6 @@ function updateObstacles() {
       //lose game
       nameUser = window.prompt("Enter your name: ");
       localStorage.setItem(nameUser, road.frames + 1);
-
-      // console.log(nameUser[i], "hello");
       clearInterval(intervalId);
       gameOverScreen();
     }
