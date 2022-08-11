@@ -40,3 +40,27 @@ body {
 #highScore li {
   color: white;
 }
+.lifeDiv {
+  display: none;
+}
+.imgHeart1 {
+  width: 30px;
+  height: 30px;
+}
+.imgHeart1-closed {
+  display: none;
+}
+.imgHeart2 {
+  width: 30px;
+  height: 30px;
+}
+.imgHeart2-closed {
+  display: none;
+}
+.imgHeart3 {
+  width: 30px;
+  height: 30px;
+}
+.imgHeart3-closed {
+  display: none;
+}

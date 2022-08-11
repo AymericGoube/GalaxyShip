@@ -18,6 +18,10 @@ const tryAgain = document.getElementById("tryAgain");
 const mainDiv = document.querySelector(".mainDiv");
 const highscoreList = document.getElementById("highScore");
 const backToMenu = document.getElementById("backToMenu");
+const lifeDiv = document.querySelector(".lifeDiv");
+const imgHeart1 = document.querySelector(".imgHeart1");
+const imgHeart2 = document.querySelector(".imgHeart2");
+const imgHeart3 = document.querySelector(".imgHeart3");
 // let livesTab = [];
 
 // "Start the game" button
@@ -25,6 +29,7 @@ start.addEventListener("click", () => {
   createInterval();
   canvas.classList.remove("canvas-closed");
   canvas.classList.toggle("canvas-open");
+  lifeDiv.classList.remove("lifeDiv");
   mainDiv.classList.toggle("mainDivClosed");
   // road.start();
 });
@@ -34,6 +39,7 @@ tryAgain.addEventListener("click", () => {
   myObstacles = [];
   car.resetKey();
   car.reset();
+  drawLives();
   createInterval();
 });
 
@@ -127,7 +133,15 @@ class Car {
   }
   losingLife() {
     this.life--;
-    // clearLivesImg();
+    if (this.life === 2) {
+      imgHeart3.classList.add("imgHeart3-closed");
+    }
+    if (this.life === 1) {
+      imgHeart2.classList.add("imgHeart2-closed");
+    }
+    if (this.life === 0) {
+      imgHeart1.classList.add("imgHeart1-closed");
+    }
   }
   resetKey() {
     keys.ArrowUp = false;
@@ -251,21 +265,26 @@ class Component {
   }
 }
 
-class life {
-  constructor(lifeImg, x, y, width, height) {
-    this.lifeImg = lifeImg;
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-  }
-  drawLivesImg() {
-    ctx.drawImage(this.lifeImg, this.x, this.y, this.width, this.height);
-  }
-  // clearLivesImg() {
-  //   livesTab.pop();
-  // }
+function drawLives() {
+  imgHeart1.classList.remove("imgHeart1-closed");
+  imgHeart2.classList.remove("imgHeart2-closed");
+  imgHeart3.classList.remove("imgHeart3-closed");
 }
+// class life {
+//   constructor(lifeImg, x, y, width, height) {
+//     this.lifeImg = lifeImg;
+//     this.x = x;
+//     this.y = y;
+//     this.width = width;
+//     this.height = height;
+//   }
+// drawLivesImg() {
+//   ctx.drawImage(this.lifeImg, this.x, this.y, this.width, this.height);
+// }
+// clearLivesImg() {
+//   livesTab.pop();
+// }
+// }
 // function drawLives() {
 //   for (let i = 0; livesTab.length < 1; i++) {
 //     this.x = 10;
