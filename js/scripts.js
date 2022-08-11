@@ -4,13 +4,13 @@ const ctx = canvas.getContext("2d");
 let myObstacles = [];
 const scoreP = document.getElementById("score");
 const alienImg = new Image();
-alienImg.src = "../images/soucoupe.png";
+alienImg.src = "images/soucoupe.png";
 const satelliteImg = new Image();
-satelliteImg.src = "../images/asteroide.png";
+satelliteImg.src = "images/asteroide.png";
 const asteroidImg = new Image();
-asteroidImg.src = "../images/asteroid.png";
+asteroidImg.src = "images/asteroid.png";
 const lifeImg = new Image();
-lifeImg.src = "../images/heart.jpeg";
+lifeImg.src = "images/heart.jpeg";
 let intervalId;
 const modalBox = document.getElementById("modal");
 const endGameModalId = document.querySelector("#endGameModal");
@@ -50,7 +50,7 @@ backToMenu.addEventListener("click", () => {
   mainDiv.classList.remove("mainDivClosed");
 });
 const roadImg = new Image();
-roadImg.src = "../images/space.jpeg";
+roadImg.src = "images/space.jpeg";
 function createInterval() {
   intervalId = setInterval(updateCanvas, 20);
 }
@@ -86,7 +86,7 @@ class Road {
 }
 const road = new Road(0, 0, 1000, 800);
 const carImg = new Image();
-carImg.src = "../images/spacecraft.png";
+carImg.src = "images/spacecraft.png";
 
 class Car {
   constructor() {
