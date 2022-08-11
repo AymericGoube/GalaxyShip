@@ -236,7 +236,7 @@ class Component {
     return this.y + 10;
   }
   bottom() {
-    return this.y + this.height - 10;
+    return this.y + this.height - 20;
   }
   update() {
     ctx.drawImage(this.img, this.x, this.y, this.height, this.width);
@@ -303,11 +303,21 @@ function updateObstacles() {
 
       let name = window.prompt("Enter your name: ");
       let score = road.frames + 1;
-      let objectTest = {
+      let highScoreTab = [];
+      let scoreObj = {
         name: name,
         score: score,
       };
-      localStorage.setItem("myObject", JSON.stringify(objectTest));
+      // let objectTest = {
+      //   name: name,
+      //   score: score,
+      // };
+      // localStorage.setItem("myObject", JSON.stringify(objectTest));
+      // const strArr = localStorage.getItem("myObject");
+      // const arr = JSON.parse(strArr);
+      // arr.push({ name: "", score: 988 });
+      // localStorage.setItem("myObject", JSON.stringify(arr));
+
       clearInterval(intervalId);
       gameOverScreen();
     }
@@ -335,16 +345,13 @@ function gameOverScreen() {
   modalBox.showModal();
 }
 
-function creatingHighscoreList() {
-  for (let i = 0; i < localStorage.length; i++) {
-    // let keyName = localStorage.key(i);
-    // let value = localStorage.getItem(keyName);
-    let parsedScore = JSON.parse(localStorage.getItem("myObject"));
-    console.log(localStorage);
-    // const objTest.keyName = value;
-  }
-}
-creatingHighscoreList();
+// function creatingHighscoreList() {
+//   for (let i = 0; i < localStorage.length; i++) {
+//     let parsedScore = JSON.parse(localStorage.getItem("myObject"));
+//     console.log(localStorage);
+//   }
+// }
+// creatingHighscoreList();
 
 // function creatingHighscoreList() {
 // localStorage.forEach((element) => {
