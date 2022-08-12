@@ -22,7 +22,7 @@ const lifeDiv = document.querySelector(".lifeDiv-closed");
 const imgHeart1 = document.querySelector(".imgHeart1");
 const imgHeart2 = document.querySelector(".imgHeart2");
 const imgHeart3 = document.querySelector(".imgHeart3");
-
+let highScoreTab = [];
 // "Start the game" button
 start.addEventListener("click", () => {
   createInterval();
@@ -31,6 +31,7 @@ start.addEventListener("click", () => {
   lifeDiv.classList.remove("lifeDiv-closed");
   lifeDiv.classList.add("lifeDiv");
   mainDiv.classList.toggle("mainDivClosed");
+  drawLives();
 });
 // "Try again ?" button
 tryAgain.addEventListener("click", () => {
@@ -45,10 +46,12 @@ tryAgain.addEventListener("click", () => {
 backToMenu.addEventListener("click", () => {
   road.frames = 0;
   myObstacles = [];
+  car.resetKey();
   car.reset();
   canvas.classList.add("canvas-closed");
   mainDiv.classList.remove("mainDivClosed");
 });
+
 const roadImg = new Image();
 roadImg.src = "images/space.jpeg";
 function createInterval() {
@@ -265,31 +268,6 @@ function drawLives() {
   imgHeart2.classList.remove("imgHeart2-closed");
   imgHeart3.classList.remove("imgHeart3-closed");
 }
-// class life {
-//   constructor(lifeImg, x, y, width, height) {
-//     this.lifeImg = lifeImg;
-//     this.x = x;
-//     this.y = y;
-//     this.width = width;
-//     this.height = height;
-//   }
-// drawLivesImg() {
-//   ctx.drawImage(this.lifeImg, this.x, this.y, this.width, this.height);
-// }
-// clearLivesImg() {
-//   livesTab.pop();
-// }
-// }
-// function drawLives() {
-//   for (let i = 0; livesTab.length < 1; i++) {
-//     this.x = 10;
-//     livesTab.push(new life(lifeImg, this.x, 65, 30, 30));
-//     console.log(livesTab[i]);
-//     livesTab[i].drawLivesImg();
-//   }
-//   livesTab.push(new life(lifeImg, this.x, 65, 30, 30));
-//   livesTab.drawLivesImg();
-// }
 
 let tabImg = [];
 tabImg.push(asteroidImg);
@@ -303,20 +281,14 @@ function updateObstacles() {
 
       let name = window.prompt("Enter your name: ");
       let score = road.frames + 1;
-      let highScoreTab = [];
       let scoreObj = {
         name: name,
         score: score,
       };
-      // let objectTest = {
-      //   name: name,
-      //   score: score,
-      // };
-      // localStorage.setItem("myObject", JSON.stringify(objectTest));
-      // const strArr = localStorage.getItem("myObject");
-      // const arr = JSON.parse(strArr);
-      // arr.push({ name: "", score: 988 });
-      // localStorage.setItem("myObject", JSON.stringify(arr));
+      highScoreTab.push(scoreObj);
+      sortArrayHighscore(highScoreTab);
+      console.log(highScoreTab);
+      creatingHighscoreList();
 
       clearInterval(intervalId);
       gameOverScreen();
@@ -345,48 +317,17 @@ function gameOverScreen() {
   modalBox.showModal();
 }
 
-// function creatingHighscoreList() {
-//   for (let i = 0; i < localStorage.length; i++) {
-//     let parsedScore = JSON.parse(localStorage.getItem("myObject"));
-//     console.log(localStorage);
-//   }
-// }
-// creatingHighscoreList();
+function sortArrayHighscore(tab) {
+  const sortedArray = tab.sort((a, b) => {
+    return b.score - a.score;
+  });
+}
 
-// function creatingHighscoreList() {
-// localStorage.forEach((element) => {
-// console.log()
-// let createList = document.createElement("li");
-// console.log(`${nameUser}, ${localStorage.getItem("nameUser")}`);
-// for (let e in localStorage) {
-//   console.log(localStorage);
-// }
-// highscoreList.append(
-//   `${nameUser}, ${localStorage.getItem("nameUser")}`,
-//   createList
-// );
-
-// });
-// }
-
-// let createList = document.createElement("li");
-// highscoreList.append(createList);
-
-// console.log(value);
-// createList.innerHTML = `${localStorage.key(7)}`;
-// Object.keys(localStorage).forEach(function (key) {
-// console.log(localStorage.getItem(key));
-// });
-// const test = new life(lifeImg, 10, 65, 30, 30);
-// const livesTab = livesTab.push(test);
-
-// Aymeric: "503"
-// Hello: "402"
-// Hello2: "456"
-// Heyo: "2866"
-// Test: "497"
-// Test2: "466"
-// aokda: "322"
-// oadod: "339"
-// padlada: "356"
-// popopo: "973"
+function creatingHighscoreList() {
+  highscoreList.innerHTML = "";
+  for (let i = 0; i < highScoreTab.length; i++) {
+    let createList = document.createElement("li");
+    highscoreList.append(createList);
+    createList.innerHTML = `${highScoreTab[i].name} : ${highScoreTab[i].score}`;
+  }
+}

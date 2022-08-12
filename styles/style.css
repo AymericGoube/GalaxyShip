@@ -43,7 +43,14 @@ body {
   background-color: transparent;
   border-style: none;
 }
-
+#highScore {
+  position: absolute;
+  bottom: 200px;
+  left: 40px;
+}
+#highScore-closed {
+  display: none;
+}
 #highScore li {
   color: white;
 }
