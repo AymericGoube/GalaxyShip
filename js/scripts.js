@@ -23,6 +23,7 @@ const imgHeart1 = document.querySelector(".imgHeart1");
 const imgHeart2 = document.querySelector(".imgHeart2");
 const imgHeart3 = document.querySelector(".imgHeart3");
 let highScoreTab = [];
+
 // "Start the game" button
 start.addEventListener("click", () => {
   createInterval();
@@ -43,6 +44,7 @@ tryAgain.addEventListener("click", () => {
   createInterval();
 });
 
+// "Back to menu button"
 backToMenu.addEventListener("click", () => {
   road.frames = 0;
   myObstacles = [];
@@ -244,6 +246,7 @@ class Component {
   update() {
     ctx.drawImage(this.img, this.x, this.y, this.height, this.width);
   }
+
   checkCollision(component) {
     // returns true if collision
     let checkTop = false;
@@ -254,6 +257,7 @@ class Component {
     if (checkTop && checkBottom && !car.hasBeenHit) {
       car.hasBeenHit = true;
       car.losingLife();
+      // adding 1sec invincibility to the player after colliding
       setTimeout(() => {
         car.hasBeenHit = false;
       }, 1000);
@@ -285,18 +289,19 @@ function updateObstacles() {
         name: name,
         score: score,
       };
+      // pushing current score into array and sorting it
       highScoreTab.push(scoreObj);
       sortArrayHighscore(highScoreTab);
-      console.log(highScoreTab);
       creatingHighscoreList();
-
+      // ending game
       clearInterval(intervalId);
       gameOverScreen();
     }
     myObstacles[i].update();
   }
   road.frames += 1;
-  if (road.frames % 20 === 0) {
+  // pushing obstacle
+  if (road.frames % 15 === 0) {
     this.x = Math.floor(Math.random() * road.width);
     this.img = tabImg[Math.floor(Math.random() * tabImg.length)];
     myObstacles.push(
